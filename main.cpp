@@ -4,12 +4,20 @@
 int main()
 {
     TW_Tree tree;
+    tree.Add(20);
+    tree.Add(10);
+    tree.Add(5);
+    tree.Add(15);
+    tree.Add(30);
+    tree.Add(25);
+    tree.Add(35);
+    tree.Add(27);
 
-    Node* root = tree.Add(nullptr, 5);
-    root = tree.Add(root, 8);
-    root = tree.Add(root, 11);
-    root = tree.Add(root, 3);
-    root = tree.Add(root, 21);
+    std::cout << "전위 순회: ";
+    tree.Print(preOrder);
+    std::cout << "중위 순회: ";
+    tree.Print(inOrder);
+    std::cout << "후위 순회: ";
+    tree.Print(PostOrder);
 
-    std::cout << "Hello World!\n";
 }

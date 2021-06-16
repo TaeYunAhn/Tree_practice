@@ -1,4 +1,12 @@
+#include <string>
 #pragma once
+
+enum EN_POS
+{
+    preOrder,
+    inOrder,
+    PostOrder,
+};
 
 
 struct Node
@@ -21,7 +29,6 @@ struct Node
     }
 };
 
-
 class TW_Tree
 {
 public:
@@ -29,14 +36,24 @@ public:
     TW_Tree();
     ~TW_Tree();
 
-    Node* Add(Node* root, int data);
+    void Add(int data);
     void Del(int data);
-    Node Find(int data);
-    void Print();
-    Node GetMax();
-    Node GetMin();
+    Node* Find(int data);
+    bool isExist(int data);
+    void Print(EN_POS pos);
+    Node* GetMax();
+    Node* GetMin();
+
+private:
+    void AddRecursive(Node*& root, int data);
+    void PrintPreOrder();
+    void PrintInOrder();
+    void PrintPostOrder();
+    void PreOrderRecursive(Node* cur_node);
+    void InOrderRecursive(Node* cur_node);
+    void PostOrderRecursive(Node* cur_node);
+
 
 private:
     Node *Root;
 };
-
