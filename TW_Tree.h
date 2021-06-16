@@ -40,6 +40,9 @@ public:
     void Del(int data);
     Node* Find(int data);
     bool isExist(int data);
+    bool LeftisExist(Node* cur_node);
+    bool RightisExist(Node* cur_node);
+    void Callup(Node* cur_node);
     void Print(EN_POS pos);
     Node* GetMax();
     Node* GetMin();
