@@ -49,7 +49,7 @@ public:
 
 private:
     void AddRecursive(Node*& root, int data);
-    bool Search(Node* cur_node, int data);
+    Node Search(Node* cur_node, int data);
     void PrintPreOrder();
     void PrintInOrder();
     void PrintPostOrder();
