@@ -20,10 +20,10 @@ void TW_Tree::Add(int data)
 
 void TW_Tree::AddRecursive(Node*& root, int data)
 {
-    // 1. µ¥ÀÌÅÍ°¡ ¾øÀ» ¶§
-    // 2. µ¥ÀÌÅÍ°¡ ·çÆ®º¸´Ù ÀÛÀ» ¶§
-    // 3. µ¥ÀÌÅÍ°¡ ·çÆ®º¸´Ù Å¬ ¶§
-    
+    // 1. ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+    // 2. ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+    // 3. ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ Å¬ ï¿½ï¿½
+
     if ( root == nullptr )
     {
         Node *new_node = new Node(data);
@@ -38,25 +38,139 @@ void TW_Tree::AddRecursive(Node*& root, int data)
     }
 }
 
-void TW_Tree::Del(int data)
-{
-    // °¡Àå ¸¶Áö¸· ³ëµå(¸®ÇÁ ³ëµå) -> »èÁ¦
-    // ÀÚ½Ä ³ëµå°¡ ÇÏ³ªÀÎ ³ëµå
-    // ÀÚ½Ä ³ëµå°¡ µÎ°³ÀÎ ³ëµå
-}
+
 
 Node* TW_Tree::Find(int data)
 {
-    // µ¥ÀÌÅÍ°¡ ÇöÀç ³ëµåº¸´Ù ÀÛÀ¸¸é ¿ÞÂÊÀ¸·Î find
-    // µ¥ÀÌÅÍ°¡ ÇöÀç ³ëµåº¸´Ù Å©¸é ¿À¸¥ÂÊÀ¸·Î find
 
-    return nullptr;
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½åº¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ find
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½åº¸ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ find
+
+    Node* cur_node = Root;
+
+    if (data == cur_node->data)
+        return cur_node;
+
+    if (data < cur_node->data)
+    {
+        cur_node = cur_node->left;
+        TW_Tree::Find;
+    }
+
+    if (data > cur_node->data)
+    {
+        cur_node = cur_node->right;
+        TW_Tree::Find;
+    }
 }
 
-bool TW_Tree::isExist(int data)
+Node TW_Tree::Search(Node* cur_node, int data)
+{
+    Node* cur_node = Root;
+    if ( !cur_node )
+        return;
+    if ((cur_node->left->data == data) || (cur_node->right->data == data))
+        return *cur_node;
+
+    Search(cur_node->left, data);
+    Search(cur_node->right, data);
+
+}
+
+void TW_Tree::Del(int data)
+{
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½) -> ï¿½ï¿½ï¿½ï¿½
+    // ï¿½Ú½ï¿½ ï¿½ï¿½å°¡ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    // ï¿½Ú½ï¿½ ï¿½ï¿½å°¡ ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    Node* cur_node = TW_Tree::Find(data);
+    Node* parent_node = nullptr;
+    Node* tmp_node = nullptr;
+
+    TW_Tree::LeftisExist(cur_node);
+    TW_Tree::RightisExist(cur_node);
+
+    if (LeftisExist && RightisExist)
+    {
+        // ï¿½Ú½Ä³ï¿½å°¡ 2ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        // ï¿½î¶² ï¿½ï¿½å°¡ ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        //  - ï¿½ï¿½ï¿½Ê³ï¿½ï¿½ : ï¿½ï¿½ï¿½Ê³ï¿½ï¿½ï¿½ ï¿½Ñ¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½
+        //  - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ñ¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..... ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½å¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½å¸¦ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½ (ï¿½Ú½Ä³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
+        //
+        //
+        TW_Tree::Search(parent_node, data);
+
+
+        Node *left_node = nullptr;
+        Node *right_node = nullptr;
+
+        while (left_node->right == nullptr)
+            left_node = left_node->right;
+
+
+        while (right_node->left == nullptr)
+            right_node = right_node->left;
+
+
+        if ((cur_node->data - left_node->data) <= (right_node->data - cur_node->data))
+        {
+            cur_node->data = left_node->data;
+            parent_node->left; // ì—¬ê¸°ì„œ ë§‰íž˜...
+        }
+        else
+        {
+            cur_node->data = right_node->data;
+        }
+    }
+
+    if (!LeftisExist && RightisExist)
+        parent_node->right = nullptr;
+
+    if (LeftisExist && !RightisExist)
+        parent_node->left = nullptr;
+
+    if (!LeftisExist && !RightisExist)
+        parent_node->left = nullptr;
+        parent_node->right = nullptr;
+}
+
+void TW_Tree::Callup(Node* cur_node)
 {
 
 }
+
+
+
+bool TW_Tree::isExist(int data)
+{
+    if (TW_Tree::Find(data) == nullptr)
+        return false;
+    else
+        return true;
+}
+
+
+bool TW_Tree::LeftisExist(Node* cur_node)
+{
+    cur_node = cur_node->left;
+    if (TW_Tree::isExist(cur_node->data))
+        return true;
+    else
+        return false;
+}
+
+
+bool TW_Tree::RightisExist(Node* cur_node)
+{
+    cur_node = cur_node->right;
+    if (TW_Tree::isExist(cur_node->data))
+        return true;
+    else
+        return false;
+}
+
 
 void TW_Tree::Print(EN_POS pos)
 {
@@ -109,7 +223,7 @@ void TW_Tree::PrintPreOrder()
             up_node = up_node->left;
 
             cout << node << endl;
-        
+
             while ( node->right == nullptr )
             {
                 node = up_node->right;
@@ -146,9 +260,9 @@ void TW_Tree::PreOrderRecursive(Node* cur_node)
     if ( !cur_node )
         return;
 
-    cout << cur_node->data << " "; // ÇöÀç ³ëµå Ãâ·Â
-    PreOrderRecursive(cur_node->left); // ¿ÞÂÊ ³ëµå Ãâ·Â
-    PreOrderRecursive(cur_node->right); // ¿À¸¥ÂÊ ³ëµå Ãâ·Â
+    cout << cur_node->data << " "; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    PreOrderRecursive(cur_node->left); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    PreOrderRecursive(cur_node->right); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 }
 
 void TW_Tree::InOrderRecursive(Node* cur_node)
@@ -156,9 +270,9 @@ void TW_Tree::InOrderRecursive(Node* cur_node)
     if ( !cur_node )
         return;
 
-    InOrderRecursive(cur_node->left); // ¿ÞÂÊ ³ëµå Ãâ·Â
-    cout << cur_node->data << " "; // ÇöÀç ³ëµå Ãâ·Â
-    InOrderRecursive(cur_node->right); // ¿À¸¥ÂÊ ³ëµå Ãâ·Â
+    InOrderRecursive(cur_node->left); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    cout << cur_node->data << " "; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    InOrderRecursive(cur_node->right); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 }
 
 void TW_Tree::PostOrderRecursive(Node* cur_node)
@@ -166,7 +280,7 @@ void TW_Tree::PostOrderRecursive(Node* cur_node)
     if ( !cur_node )
         return;
 
-    PostOrderRecursive(cur_node->left); // ¿ÞÂÊ ³ëµå Ãâ·Â
-    PostOrderRecursive(cur_node->right); // ¿À¸¥ÂÊ ³ëµå Ãâ·Â
-    cout << cur_node->data << " "; // ÇöÀç ³ëµå Ãâ·Â
+    PostOrderRecursive(cur_node->left); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    PostOrderRecursive(cur_node->right); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    cout << cur_node->data << " "; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 }
