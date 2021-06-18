@@ -20,4 +20,17 @@ int main()
     std::cout << "후위 순회: ";
     tree.Print(PostOrder);
 
+
+    if ( !tree.isExist(13) )
+        std::cout << "없음";
+    else
+        std::cout << "있음";
+
+
+    tree.Del(15);
+    tree.Del(25);
+
+    tree.Print(preOrder);
+
+
 }

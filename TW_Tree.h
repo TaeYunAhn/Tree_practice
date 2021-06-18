@@ -37,15 +37,18 @@ public:
     ~TW_Tree();
 
     void Add(int data);
+
     void Del(int data);
     Node* Find(int data);
+
     bool isExist(int data);
     bool LeftisExist(Node* cur_node);
     bool RightisExist(Node* cur_node);
     void Callup(Node* cur_node);
+
     void Print(EN_POS pos);
-    Node* GetMax();
-    Node* GetMin();
+    Node* GetMax(Node *cur_node);
+    Node* GetMin(Node *cur_node);
 
 private:
     void AddRecursive(Node*& root, int data);
@@ -57,6 +60,7 @@ private:
     void InOrderRecursive(Node* cur_node);
     void PostOrderRecursive(Node* cur_node);
 
+    Node* FindRecursive(Node* cur_node, int data);
 
 private:
     Node *Root;

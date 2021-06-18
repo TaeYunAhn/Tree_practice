@@ -42,11 +42,13 @@ void TW_Tree::AddRecursive(Node*& root, int data)
 
 Node* TW_Tree::Find(int data)
 {
+    return FindRecursive(Root, data);
+
 
     // �����Ͱ� ���� ��庸�� ������ �������� find
     // �����Ͱ� ���� ��庸�� ũ�� ���������� find
 
-    Node* cur_node = Root;
+   /* Node* cur_node = Root;
 
     if (data == cur_node->data)
         return cur_node;
@@ -54,42 +56,63 @@ Node* TW_Tree::Find(int data)
     if (data < cur_node->data)
     {
         cur_node = cur_node->left;
-        TW_Tree::Find;
+        Find(cur_node->data);
     }
 
     if (data > cur_node->data)
     {
         cur_node = cur_node->right;
-        TW_Tree::Find;
-    }
+        Find(cur_node->data);
+    }*/
 }
 
 Node TW_Tree::Search(Node* cur_node, int data)
 {
-    Node* cur_node = Root;
+    /*Node* cur_node = Root;
     if ( !cur_node )
         return;
     if ((cur_node->left->data == data) || (cur_node->right->data == data))
         return *cur_node;
 
     Search(cur_node->left, data);
-    Search(cur_node->right, data);
+    Search(cur_node->right, data);*/
 
+    return Node();
 }
+
+// root부터 탐색해가면서 부모노드 저장하고 진행
+// 재귀
 
 void TW_Tree::Del(int data)
 {
     // ���� ������ ���(���� ���) -> ����
     // �ڽ� ��尡 �ϳ��� ���
     // �ڽ� ��尡 �ΰ��� ���
-    Node* cur_node = TW_Tree::Find(data);
+
+    Node* cur_node = Root;
     Node* parent_node = nullptr;
-    Node* tmp_node = nullptr;
 
-    TW_Tree::LeftisExist(cur_node);
-    TW_Tree::RightisExist(cur_node);
+    while ( cur_node != nullptr )
+    {
+        if ( cur_node->data == data )
+            break;
 
-    if (LeftisExist && RightisExist)
+        if ( cur_node->data < data )
+        {
+            parent_node = cur_node;
+            cur_node = cur_node->right;
+        }
+        else
+        {
+            parent_node = cur_node;
+            cur_node = cur_node->left;
+        }
+    }
+
+    if ( cur_node == nullptr )
+        return;
+
+    if ( cur_node->left != nullptr && cur_node->right != nullptr )
     {
         // �ڽĳ�尡 2���� ���
         // � ��尡 ��ü���� ����
@@ -100,7 +123,7 @@ void TW_Tree::Del(int data)
         // ���� ��带 ��ü�� ��带 ���� (�ڽĳ��� ���� ����������)
         //
         //
-        TW_Tree::Search(parent_node, data);
+        //TW_Tree::Search(parent_node, data);
 
 
         Node *left_node = nullptr;
@@ -117,23 +140,47 @@ void TW_Tree::Del(int data)
         if ((cur_node->data - left_node->data) <= (right_node->data - cur_node->data))
         {
             cur_node->data = left_node->data;
-            parent_node->left; // 여기서 막힘...
+            delete left_node;
         }
         else
         {
             cur_node->data = right_node->data;
+            delete right_node;
         }
     }
 
-    if (!LeftisExist && RightisExist)
-        parent_node->right = nullptr;
+    if ( !cur_node->left && cur_node->right )
+    {
+        if ( cur_node->data < parent_node->data )
+            parent_node->left = cur_node->right;
+        else
+            parent_node->right = cur_node->right;
 
-    if (LeftisExist && !RightisExist)
-        parent_node->left = nullptr;
+        delete cur_node;
+        return;
+    }
 
-    if (!LeftisExist && !RightisExist)
-        parent_node->left = nullptr;
-        parent_node->right = nullptr;
+    if ( cur_node->left && !cur_node->right )
+    {
+        if ( cur_node->data < parent_node->data )
+            parent_node->left = cur_node->left;
+        else
+            parent_node->right = cur_node->left;
+
+        delete cur_node;
+        return;
+    }
+
+    if ( !cur_node->left && !cur_node->right )
+    {
+        if ( parent_node->data < cur_node->data )
+            parent_node->right = nullptr;
+        else
+            parent_node->left = nullptr;
+
+        delete cur_node;
+        return;
+    }
 }
 
 void TW_Tree::Callup(Node* cur_node)
@@ -145,31 +192,28 @@ void TW_Tree::Callup(Node* cur_node)
 
 bool TW_Tree::isExist(int data)
 {
-    if (TW_Tree::Find(data) == nullptr)
-        return false;
-    else
-        return true;
+    return Find(data) != nullptr;
 }
 
 
-bool TW_Tree::LeftisExist(Node* cur_node)
-{
-    cur_node = cur_node->left;
-    if (TW_Tree::isExist(cur_node->data))
-        return true;
-    else
-        return false;
-}
-
-
-bool TW_Tree::RightisExist(Node* cur_node)
-{
-    cur_node = cur_node->right;
-    if (TW_Tree::isExist(cur_node->data))
-        return true;
-    else
-        return false;
-}
+//bool TW_Tree::LeftisExist(Node* cur_node)
+//{
+//    cur_node = cur_node->left;
+//    if (isExist(cur_node->data))
+//        return true;
+//    else
+//        return false;
+//}
+//
+//
+//bool TW_Tree::RightisExist(Node* cur_node)
+//{
+//    cur_node = cur_node->right;
+//    if (isExist(cur_node->data))
+//        return true;
+//    else
+//        return false;
+//}
 
 
 void TW_Tree::Print(EN_POS pos)
@@ -190,22 +234,21 @@ void TW_Tree::Print(EN_POS pos)
     }
 }
 
-Node* TW_Tree::GetMax()
+Node* TW_Tree::GetMax(Node *cur_node)
 {
-    return nullptr;
+    while (!cur_node ) 
+        cur_node = cur_node->right;
+    return (cur_node);
+    
 }
 
-Node* TW_Tree::GetMin()
+Node* TW_Tree::GetMin(Node *cur_node)
 {
     return nullptr;
 }
 
 void TW_Tree::PrintPreOrder()
 {
-    Node n;
-    Node* p = new Node;
-    Node* p = Root;
-
     /*Node *Last_Node = Root;
     Node *node = Root;
     Node *up_node = Root;
@@ -283,4 +326,24 @@ void TW_Tree::PostOrderRecursive(Node* cur_node)
     PostOrderRecursive(cur_node->left); // ���� ��� ���
     PostOrderRecursive(cur_node->right); // ������ ��� ���
     cout << cur_node->data << " "; // ���� ��� ���
+}
+
+Node* TW_Tree::FindRecursive(Node* cur_node, int data)
+{
+    if ( cur_node == nullptr )
+        return nullptr;
+
+    if (data == cur_node->data)
+        return cur_node;
+
+    if (data < cur_node->data)
+    {
+        cur_node = cur_node->left;
+        return FindRecursive(cur_node, data);
+    }
+    else
+    {
+        cur_node = cur_node->right;
+        return FindRecursive(cur_node, data);
+    }
 }
