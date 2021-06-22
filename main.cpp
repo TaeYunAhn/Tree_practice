@@ -22,9 +22,9 @@ int main()
 
 
     if ( !tree.isExist(13) )
-        std::cout << "없음";
+        std::cout << "없음\n";
     else
-        std::cout << "있음";
+        std::cout << "있음\n";
 
 
     tree.Del(15);
